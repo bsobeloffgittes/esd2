@@ -6,6 +6,18 @@
 #include "dc_motor.h"
 
 
+ESP32Encoder encoder;
+// ESP32Encoder encoder2;
+
+// // timer and flag for example, not needed for encoders
+// unsigned long encoder2lastToggled;
+// bool encoder2Paused = false;
+
+
+
+
+
+
 //uint16_t measurement_delay_us = 65535;
 
 
@@ -26,6 +38,7 @@ void setup() {
   steering_servo.attach(SERVO_PIN); 
 
   setup_dc();
+  setup_encoder();
 
 
 
@@ -50,7 +63,8 @@ void loop() {
     delay(15);                       // waits 15ms for the servo to reach the position
     set_motor_power(((float) (pos - 90))/90);
     read_imu();
-    print_imu();
+    // print_imu();
+    Serial.println("Encoder count = " + String((int32_t)encoder.getCount()));
   }
   for (pos = 180; pos >= 0; pos -= 1) { // goes from 180 degrees to 0 degrees
     steering_servo.write(pos);              // tell servo to go to position in variable 'pos'
@@ -58,11 +72,9 @@ void loop() {
     set_motor_power(-1);
     set_motor_power(((float) (pos - 90))/90);
     read_imu();
-    print_imu();
+    // print_imu();
+    Serial.println("Encoder count = " + String((int32_t)encoder.getCount()));
   }
-
-
-
 
 
  

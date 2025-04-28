@@ -19,6 +19,19 @@ void set_motor_power(float power) {
     analogWrite(MOTOR_EN_PIN, power_int);
 }
 
-int get_encoder_counts() {
+
+void setup_encoder() {
+      // Enable the weak pull up resistors
+	ESP32Encoder::useInternalWeakPullResistors = puType::up;
+
+	// use pin 19 and 18 for the first encoder
+	encoder.attachHalfQuad(25, 26);
     
+	// set starting count value after attaching
+	encoder.setCount(0);
+}
+
+
+int get_encoder_counts() {
+
 }
