@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>ESP32 Float Sender</title>
+</head>
+<body>
+  <h2>Send Float to ESP32</h2>
+  <input type="number" id="floatInput" step="any" placeholder="Enter float...">
+  <button onclick="sendFloat()">Send</button>
+  <p id="log"></p>
+
+  <script>
+    const ws = new WebSocket(`ws://${location.hostname}/ws`);
+
+    ws.onopen = () => {
+      document.getElementById("log").innerText += "WebSocket connected\n";
+    };
+
+    ws.onmessage = (event) => {
+      document.getElementById("log").innerText += "ESP32: " + event.data + "\n";
+    };
+
+    function sendFloat() {
+      const floatVal = document.getElementById("floatInput").value;
+      if (!floatVal) {
+        alert("Please enter a value.");
+        return;
+      }
+      ws.send(floatVal);
+      document.getElementById("log").innerText += "You: " + floatVal + "\n";
+    }
+  </script>
+</body>
+</html>

@@ -6,12 +6,65 @@
 #include "dc_motor.h"
 
 
-ESP32Encoder encoder;
+//ESP32Encoder encoder;
 // ESP32Encoder encoder2;
 
 // // timer and flag for example, not needed for encoders
 // unsigned long encoder2lastToggled;
 // bool encoder2Paused = false;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#include <WiFi.h>
+#include <ESPAsyncWebServer.h>
+#include <AsyncTCP.h>
+
+const char* ssid = "Pixel_7756";
+const char* password = "password1";
+
+AsyncWebServer server(80);
+AsyncWebSocket ws("/ws");
+
+float storedValue = 0.0;
+
+void onWebSocketEvent(AsyncWebSocket *server, AsyncWebSocketClient *client,
+                      AwsEventType type, void *arg, uint8_t *data, size_t len) {
+  if (type == WS_EVT_CONNECT) {
+    Serial.println("Client connected");
+    client->text("Connected to ESP32 WebSocket");
+  } else if (type == WS_EVT_DATA) {
+    String msg = "";
+    for (size_t i = 0; i < len; i++) {
+      msg += (char)data[i];
+    }
+
+    float receivedFloat = msg.toFloat();  // Convert to float
+    storedValue = receivedFloat;
+
+    Serial.printf("Received float: %.3f\n", storedValue);
+    client->text("Stored float: " + String(storedValue, 3));
+  }
+}
+
+
+
+
+
+
 
 
 
@@ -50,7 +103,54 @@ void setup() {
   while (!Serial)
     delay(10); // will pause Zero, Leonardo, etc until serial console opens
 
-  imu_setup();
+  // imu_setup();
+
+
+
+
+
+
+
+
+  Serial.begin(115200);
+  WiFi.begin(ssid, password);
+
+  while (WiFi.status() != WL_CONNECTED) {
+    delay(1000);
+    Serial.println("Connecting to WiFi...");
+  }
+
+  Serial.print("Connected. IP: ");
+  Serial.println(WiFi.localIP());
+
+  ws.onEvent(onWebSocketEvent);
+  server.addHandler(&ws);
+  server.begin();
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 }
 
 void loop() {
@@ -62,18 +162,20 @@ void loop() {
     steering_servo.write(pos);              // tell servo to go to position in variable 'pos'
     delay(15);                       // waits 15ms for the servo to reach the position
     set_motor_power(((float) (pos - 90))/90);
-    read_imu();
+    // read_imu();
     // print_imu();
-    Serial.println("Encoder count = " + String((int32_t)encoder.getCount()));
+    //Serial.println("Encoder count = " + String((int32_t)encoder.getCount()));
+    Serial.println(storedValue);
   }
   for (pos = 180; pos >= 0; pos -= 1) { // goes from 180 degrees to 0 degrees
     steering_servo.write(pos);              // tell servo to go to position in variable 'pos'
     delay(15);                       // waits 15ms for the servo to reach the position
     set_motor_power(-1);
     set_motor_power(((float) (pos - 90))/90);
-    read_imu();
+    // read_imu();
     // print_imu();
-    Serial.println("Encoder count = " + String((int32_t)encoder.getCount()));
+    //Serial.println("Encoder count = " + String((int32_t)encoder.getCount()));
+    Serial.println(storedValue);
   }
 
 
