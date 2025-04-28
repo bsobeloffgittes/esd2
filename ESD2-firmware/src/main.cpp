@@ -111,21 +111,19 @@ void setup() {
 
 
 
+  // WiFi.begin(ssid, password);
 
-  Serial.begin(115200);
-  WiFi.begin(ssid, password);
+  // while (WiFi.status() != WL_CONNECTED) {
+  //   delay(1000);
+  //   Serial.println("Connecting to WiFi...");
+  // }
 
-  while (WiFi.status() != WL_CONNECTED) {
-    delay(1000);
-    Serial.println("Connecting to WiFi...");
-  }
+  //Serial.print("Connected. IP: ");
+  //Serial.println(WiFi.localIP());
 
-  Serial.print("Connected. IP: ");
-  Serial.println(WiFi.localIP());
-
-  ws.onEvent(onWebSocketEvent);
-  server.addHandler(&ws);
-  server.begin();
+  //ws.onEvent(onWebSocketEvent);
+  //server.addHandler(&ws);
+  //server.begin();
 
 
 
