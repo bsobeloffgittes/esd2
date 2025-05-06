@@ -6,7 +6,7 @@
 #include "dc_motor.h"
 
 
-ESP32Encoder encoder;
+// ESP32Encoder encoder;
 // ESP32Encoder encoder2;
 
 // // timer and flag for example, not needed for encoders
