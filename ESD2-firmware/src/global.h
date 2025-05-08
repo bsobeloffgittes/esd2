@@ -5,6 +5,11 @@
 #include <Adafruit_ICM20948.h>
 #include <Adafruit_Sensor.h>
 #include <ESP32Encoder.h>
+#include <ESP32_Servo.h>
+
+
+#define SERVO_PIN 18
+
 
 extern Adafruit_ICM20948 icm;
 extern sensors_event_t accel;
@@ -14,5 +19,7 @@ extern sensors_event_t temp;
 
 
 extern ESP32Encoder encoder;
+
+extern Servo steering_servo;
 
 #endif
