@@ -16,6 +16,11 @@ const char* server_ip = "10.105.50.169"; // Replace with your PC's local IP
 const uint16_t server_port = 8888;
 const char* ws_path = "/ws_esp32";
 
+bool motor_enabled = false;
+bool direction_forward = true;  // true = forward, false = reverse
+
+
+
 // ESP32Encoder encoder;
 // ESP32Encoder encoder2;
 
@@ -52,7 +57,19 @@ void webSocketEvent(WStype_t type, uint8_t* payload, size_t length) {
       break;
     case WStype_TEXT:
       Serial.printf("[WebSocket] Message from server: %s\n", payload);
-      break;
+      if (strcmp((char*)payload, "start_motor") == 0) {
+          motor_enabled = true;
+          webSocket.sendTXT("motor_started");
+      } else if (strcmp((char*)payload, "stop_motor") == 0) {
+          motor_enabled = false;
+          set_motor1_power(0);
+          webSocket.sendTXT("motor_stopped");
+      } else if (strcmp((char*)payload, "set_direction:forward") == 0) {
+          direction_forward = true;
+      } else if (strcmp((char*)payload, "set_direction:reverse") == 0) {
+          direction_forward = false;
+      }
+      break;  
     default:
       break;
   }
@@ -70,7 +87,8 @@ void setup() {
   Serial.println("Booting...");
 
 
-  setup_dc();
+  setup_motor1();
+  setup_motor2();
   setup_encoder();
   Serial.println("Booting...");
 
@@ -96,46 +114,34 @@ void setup() {
   imu_setup();
 }
 
+
 void loop() {
-  float motor_power;
+  // Keep WebSocket connection alive
+  webSocket.loop();
 
-  // Sweep servo forward
-  for (pos = 0; pos <= 180; pos++) {
-    steering_servo.write(pos);
-    delay(15);
-    set_motor_power(((float)(pos - 90)) / 90);
-    read_imu();
+  if (motor_enabled) {
+      // Set motor power based on direction
+      float power = 1.0;
+      if (!direction_forward) {
+          power = -1.0;
+      }
 
-    int32_t count = encoder.getCount();
-    // Serial.println("Encoder count = " + String(count));
+      set_motor1_power(power);
+      set_motor2_power(power);
 
-    // Send encoder count over WebSocket
-    if (webSocket.isConnected()) {
-      String msg = String("{\"encoder\":") + count + "}";
-      webSocket.sendTXT(msg);
-    }
+      // Read and send encoder data
+      int32_t count = encoder.getCount();
+      Serial.println("Encoder count = " + String(count));
 
-    webSocket.loop();
+      if (webSocket.isConnected()) {
+          String msg = String("{\"encoder\":") + count + "}";
+          webSocket.sendTXT(msg);
+      }
+
+      delay(100);  // Adjust this for update rate
+  } else {
+      set_motor1_power(0);  // Stop the motor
+      set_motor2_power(0);
+      delay(100);
   }
-
-  // Sweep servo backward
-  for (pos = 180; pos >= 0; pos--) {
-    steering_servo.write(pos);
-    delay(15);
-    set_motor_power(((float)(pos - 90)) / 90);
-    read_imu();
-
-    int32_t count = encoder.getCount();
-    // Serial.println("Encoder count = " + String(count));
-
-    // Send encoder count over WebSocket
-    if (webSocket.isConnected()) {
-      String msg = String("{\"encoder\":") + count + "}";
-      webSocket.sendTXT(msg);
-    }
-
-    webSocket.loop();
-  }
-
-  delay(100);
 }

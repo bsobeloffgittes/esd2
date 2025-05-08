@@ -6,6 +6,8 @@ import os
 
 # Track all connected browser clients
 clients = set()
+esp32_clients = set()   # For ESP32 connections at /ws_esp32
+
 
 class MainHandler(tornado.web.RequestHandler):
     def get(self):
@@ -21,28 +23,33 @@ class EchoWebSocket(tornado.websocket.WebSocketHandler):
 
     def on_message(self, message):
         print(f"Browser said: {message}")
-        self.write_message(f"Echo: {message}")
+        # Send the message to all connected ESP32s
+        for ws in esp32_clients:
+            ws.write_message(message)
 
+        self.write_message(f"Command sent: {message}")
+    
     def on_close(self):
         print("Browser disconnected")
         clients.discard(self)
 
 class EchoWebSocketESP32(tornado.websocket.WebSocketHandler):
     def check_origin(self, origin):
-        return True  # Allow ESP32 to connect regardless of origin
+        return True
 
     def open(self):
         print("ESP32 connected from", self.request.remote_ip)
+        esp32_clients.add(self)
 
     def on_message(self, message):
         print(f"Received message from ESP32: {message}")
-
-        # Broadcast to all connected browsers
         for client in clients:
             client.write_message(f"[Encoder] {message}")
 
     def on_close(self):
         print("ESP32 disconnected")
+        esp32_clients.discard(self)
+
 
 def make_app():
     return tornado.web.Application([
