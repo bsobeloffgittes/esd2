@@ -11,3 +11,6 @@ sensors_event_t temp;
 ESP32Encoder encoder;
 
 Servo steering_servo;
+
+bool motor_enabled;
+bool direction_forward;

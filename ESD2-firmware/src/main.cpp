@@ -11,41 +11,45 @@
 
 void setup() {
 
+  Serial.begin(115200);
+  while (!Serial)
+  delay(10); // will pause Zero, Leonardo, etc until serial console opens
+
   // Wire.setPins(sda_pin, scl_pin);
   Wire.begin();
-
-  wifi_init();
 
   // put your setup code here, to run once:
   steering_servo.attach(SERVO_PIN); 
 
-  setup_dc();
+  setup_motor1();
+  setup_motor2();
   setup_encoder();
 
+  bool motor_enabled = false;
+  bool direction_forward = true;  // true = forward, false = reverse
 
-  Serial.begin(115200);
-  while (!Serial)
-  delay(10); // will pause Zero, Leonardo, etc until serial console opens
+
+  
 
 
   // Create a task and start it immediately
   xTaskCreate(
     wifi_task,	// Function to be called
     "wifi task",	// Name of task
-    1024,				// Stack size in bytes
+    16384,				// Stack size in bytes
     NULL,				// Parameter to pass to function (void*)
     1,					// Task priority (0 to configMAX_PRIORITIES - 1)
     NULL				// Task handle (TaskHandle_t*)
   );
 
-  xTaskCreate(
+  /*xTaskCreate(
     speed_control_task,	// Function to be called
     "speed_control_task",	// Name of task
     1024,				// Stack size in bytes
     NULL,				// Parameter to pass to function (void*)
     2,					// Task priority (0 to configMAX_PRIORITIES - 1)
     NULL				// Task handle (TaskHandle_t*)
-  );
+  );*/
   
   vTaskDelete(NULL);
 

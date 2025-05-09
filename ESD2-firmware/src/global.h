@@ -22,4 +22,8 @@ extern ESP32Encoder encoder;
 
 extern Servo steering_servo;
 
+
+extern bool motor_enabled;
+extern bool direction_forward;
+
 #endif

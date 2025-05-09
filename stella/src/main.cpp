@@ -12,7 +12,7 @@ const char* ssid = "Device-Northwestern";
 // const char* password = "YOUR_WIFI_PASSWORD";
 
 // === WebSocket Setup ===
-const char* server_ip = "10.105.50.169"; // Replace with your PC's local IP
+const char* server_ip = "10.105.13.187"; // Replace with your PC's local IP
 const uint16_t server_port = 8888;
 const char* ws_path = "/ws_esp32";
 
