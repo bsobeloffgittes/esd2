@@ -63,7 +63,3 @@ void setup_encoder() {
 	encoder.setCount(0);
 }
 
-
-int get_encoder_counts() {
-
-}

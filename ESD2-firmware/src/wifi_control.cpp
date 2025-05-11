@@ -87,27 +87,24 @@ void service_websocket(void) {
   if (motor_enabled) {
       // Set motor power based on direction
       float power = 1.0;
+
       if (!direction_forward) {
           power = -1.0;
       }
 
-      set_motor1_power(power);
-      set_motor2_power(power);
+      Serial.print(power);
 
-      // Read and send encoder data
-      int32_t count = encoder.getCount();
-      Serial.println("Encoder count = " + String(count));
+      motor_power = power;
 
       if (webSocket.isConnected()) {
-          String msg = String("{\"encoder\":") + count + "}";
-          webSocket.sendTXT(msg);
-      }
+            String msg = String("{\"encoder\":") + encoder_counts + "}";
+            webSocket.sendTXT(msg);
+        }
+      
 
-      delay(100);  // Adjust this for update rate
-  } else {
-      set_motor1_power(0);  // Stop the motor
-      set_motor2_power(0);
-      delay(100);
-  }
+      vTaskDelay(100 / portTICK_PERIOD_MS);  } 
+      else {
+      motor_power = 0;
+      vTaskDelay(100 / portTICK_PERIOD_MS);  }
 
 }

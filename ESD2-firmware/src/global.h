@@ -21,11 +21,12 @@ extern sensors_event_t temp;
 extern ESP32Encoder encoder;
 
 extern Servo steering_servo;
-
 extern int steering_angle;
 
 
 extern bool motor_enabled;
+extern float motor_power;
 extern bool direction_forward;
+extern int encoder_counts;
 
 #endif

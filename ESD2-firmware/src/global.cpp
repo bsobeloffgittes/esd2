@@ -15,4 +15,6 @@ int steering_angle;
 
 
 bool motor_enabled;
+float motor_power;
 bool direction_forward;
+int encoder_counts;

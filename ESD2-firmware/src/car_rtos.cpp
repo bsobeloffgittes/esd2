@@ -6,7 +6,9 @@ void wifi_task(void * params) {
     Serial.println("wifi init finished ---------------");
 
     while(true) {
+        
         service_websocket();
+        
 
         // Loop at 10 Hz
         vTaskDelay(100 / portTICK_PERIOD_MS);
@@ -16,37 +18,38 @@ void wifi_task(void * params) {
 
 
 void speed_control_task(void * params) {
+    
     steering_servo.attach(SERVO_PIN); 
-    float motor_power;
     int pos = 0;    // variable to store the servo position
-
-    /*for (pos = 0; pos <= 180; pos += 1) { // goes from 0 degrees to 180 degrees
-        // in steps of 1 degree
-        steering_servo.write(pos);              // tell servo to go to position in variable 'pos'
-        vTaskDelay(15 / portTICK_PERIOD_MS);                      // waits 15ms for the servo to reach the position
-        set_motor_power(((float) (pos - 90))/90);
-    }
-    for (pos = 180; pos >= 0; pos -= 1) { // goes from 180 degrees to 0 degrees
-        steering_servo.write(pos);              // tell servo to go to position in variable 'pos'
-        vTaskDelay(15 / portTICK_PERIOD_MS);                         // waits 15ms for the servo to reach the position
-        set_motor_power(((float) (pos - 90))/90);
-
-        // Loop at 10 Hz
-        vTaskDelay(100 / portTICK_PERIOD_MS);
-    }*/
    while(true) {
-    // vTaskDelay(15 / portTICK_PERIOD_MS);
-    // steering_servo.write(steering_angle);
-    Serial.print("blah");
-    // put your main code here, to run repeatedly:
-  for (pos = 0; pos <= 180; pos += 1) { // goes from 0 degrees to 180 degrees
-    // in steps of 1 degree
-    steering_servo.write(pos);              // tell servo to go to position in variable 'pos'
-    vTaskDelay(15/ portTICK_PERIOD_MS);                         // waits 15ms for the servo to reach the position
-  }
-  for (pos = 180; pos >= 0; pos -= 1) { // goes from 180 degrees to 0 degrees
-    steering_servo.write(pos);              // tell servo to go to position in variable 'pos'
-    vTaskDelay(15/ portTICK_PERIOD_MS);                      // waits 15ms for the servo to reach the position
-  }
+    vTaskDelay(15 / portTICK_PERIOD_MS);
+    steering_servo.write(steering_angle);
+
+    
    }
+}
+
+void dc_motor_control_task(void * params) {
+    Serial.print("in speed_control");
+    setup_motor1();
+    setup_motor2();
+    setup_encoder();
+
+    bool motor_enabled = false;
+    bool direction_forward = true;  // true = forward, false = reverse
+    while(true) {
+        set_motor1_power(motor_power);
+        set_motor2_power(motor_power);
+        Serial.print(motor_power);
+        vTaskDelay(15 / portTICK_PERIOD_MS);
+
+        // Read and send encoder data
+        encoder_counts = encoder.getCount();
+        Serial.println("Encoder count = " + String(encoder_counts));
+
+        
+    }
+    
+
+
 }
