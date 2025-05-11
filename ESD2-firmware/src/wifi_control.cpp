@@ -8,7 +8,7 @@ const char* ssid = "Device-Northwestern";
 
 // === WebSocket Setup ===
 // TODO: make this not have a problem with different computers
-const char* server_ip = "10.105.13.187"; // 10.105.13.187 for Benji, 10.105.50.169 for Stella
+const char* server_ip = "10.105.42.206"; // 10.105.13.187 for Benji, 10.105.42.206 for Stella
 const uint16_t server_port = 8888;
 const char* ws_path = "/ws_esp32";
 
@@ -36,6 +36,13 @@ void webSocketEvent(WStype_t type, uint8_t* payload, size_t length) {
             direction_forward = true;
         } else if (strcmp((char*)payload, "set_direction:reverse") == 0) {
             direction_forward = false;
+        } else if (strncmp((char*)payload, "servo:", 6) == 0) {
+            int angle = atoi((char*)payload + 6);  // Get number after "servo:"
+            Serial.println(angle);
+            angle = constrain(angle, 0, 180);      // Keep within range
+            steering_angle = angle;
+            Serial.println(angle);
+            Serial.println("Servo set to angle: " + String(angle));
         }
         break;  
       default:
