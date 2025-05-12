@@ -28,24 +28,33 @@ void setup() {
 
 
   // Create a task and start it immediately
-  xTaskCreate(
+  xTaskCreatePinnedToCore(
     wifi_task,	// Function to be called
     "wifi task",	// Name of task
-    16384,				// Stack size in bytes
+    4096,				// Stack size in bytes
     NULL,				// Parameter to pass to function (void*)
     1,					// Task priority (0 to configMAX_PRIORITIES - 1)
-    NULL				// Task handle (TaskHandle_t*)
+    NULL,				// Task handle (TaskHandle_t*)
+    1
   );
 
-  xTaskCreatePinnedToCore(
+  xTaskCreate(
     speed_control_task,	// Function to be called
     "speed_control_task",	// Name of task
     1024,				// Stack size in bytes
     NULL,				// Parameter to pass to function (void*)
-    2,					// Task priority (0 to configMAX_PRIORITIES - 1)
-    NULL,				// Task handle (TaskHandle_t*)
-    0
+    3,					// Task priority (0 to configMAX_PRIORITIES - 1)
+    NULL				// Task handle (TaskHandle_t*)
   );
+
+  // xTaskCreate(
+  //   dc_motor_control_task,	// Function to be called
+  //   "dc motor control task",	// Name of task
+  //   2048,				// Stack size in bytes
+  //   NULL,				// Parameter to pass to function (void*)
+  //   2,					// Task priority (0 to configMAX_PRIORITIES - 1)
+  //   NULL				// Task handle (TaskHandle_t*)
+  // );
   
   vTaskDelete(NULL);
 

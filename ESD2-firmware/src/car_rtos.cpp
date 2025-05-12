@@ -18,36 +18,53 @@ void wifi_task(void * params) {
 
 
 void speed_control_task(void * params) {
-    
-    steering_servo.attach(SERVO_PIN); 
-    int pos = 0;    // variable to store the servo position
-   while(true) {
-    vTaskDelay(15 / portTICK_PERIOD_MS);
-    steering_servo.write(steering_angle);
 
-    
+    int pos = 0;    // variable to store the servo position
+
+    setup_motor1();
+    // setup_motor2();
+    //setup_encoder();
+
+    steering_servo.attach(SERVO_PIN);
+
+    motor_enabled = false;
+    direction_forward = true;  // true = forward, false = reverse
+
+    vTaskDelay(500 / portTICK_PERIOD_MS);
+
+    while(true) {
+        steering_servo.write(steering_angle);
+        Serial.println(motor_power);
+
+        set_motor1_power(motor_power);
+        // set_motor2_power(motor_power);
+
+        vTaskDelay(100 / portTICK_PERIOD_MS);
    }
 }
 
 void dc_motor_control_task(void * params) {
-    Serial.print("in speed_control");
-    setup_motor1();
-    setup_motor2();
-    setup_encoder();
+    // setup_motor1();
+    // setup_motor2();
+    // setup_encoder();
 
-    bool motor_enabled = false;
-    bool direction_forward = true;  // true = forward, false = reverse
+    // motor_enabled = false;
+    // direction_forward = true;  // true = forward, false = reverse
+
+    vTaskDelay(500 / portTICK_PERIOD_MS);
+
     while(true) {
+        Serial.print("dc motor loop");
         set_motor1_power(motor_power);
-        set_motor2_power(motor_power);
-        Serial.print(motor_power);
-        vTaskDelay(15 / portTICK_PERIOD_MS);
+        // set_motor2_power(motor_power);
+        // Serial.print(motor_power);
+        
 
         // Read and send encoder data
         encoder_counts = encoder.getCount();
         Serial.println("Encoder count = " + String(encoder_counts));
 
-        
+        vTaskDelay(100 / portTICK_PERIOD_MS);
     }
     
 

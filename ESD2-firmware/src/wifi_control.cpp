@@ -8,7 +8,7 @@ const char* ssid = "Device-Northwestern";
 
 // === WebSocket Setup ===
 // TODO: make this not have a problem with different computers
-const char* server_ip = "10.105.42.206"; // 10.105.13.187 for Benji, 10.105.42.206 for Stella
+const char* server_ip = "10.105.13.187"; // 10.105.13.187 for Benji, 10.105.42.206 for Stella
 const uint16_t server_port = 8888;
 const char* ws_path = "/ws_esp32";
 

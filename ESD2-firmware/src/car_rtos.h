@@ -8,6 +8,7 @@
 
 void wifi_task(void * params);
 void speed_control_task(void * params);
+void dc_motor_control_task(void * params);
 
 
 #endif
