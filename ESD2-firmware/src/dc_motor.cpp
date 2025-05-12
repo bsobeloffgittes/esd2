@@ -5,8 +5,8 @@ void setup_motor1() {
     pinMode(MOTOR_IN1_PIN, OUTPUT);
 
     // Set up PWM on PWMA 
-    ledcSetup(6, 1000, 8);
-    ledcAttachPin(MOTOR_PWMA_PIN,6);
+    ledcSetup(0, 1000, 8);
+    ledcAttachPin(MOTOR_PWMA_PIN,0);
 }
 
 // Take in power from 0-1
@@ -31,8 +31,8 @@ void setup_motor2() {
     pinMode(MOTOR2_IN1_PIN, OUTPUT);
 
     // Set up PWM on PWMB 
-    ledcSetup(7, 1000, 8); // Channel 1 for motor 2
-    ledcAttachPin(MOTOR2_PWMB_PIN,7);
+    ledcSetup(1, 1000, 8); // Channel 1 for motor 2
+    ledcAttachPin(MOTOR2_PWMB_PIN,1);
 }
 
 // Take in power from 0-1

@@ -95,16 +95,19 @@ void service_websocket(void) {
       Serial.print(power);
 
       motor_power = power;
-
-      if (webSocket.isConnected()) {
-            String msg = String("{\"encoder\":") + encoder_counts + "}";
-            webSocket.sendTXT(msg);
-        }
       
 
-      vTaskDelay(100 / portTICK_PERIOD_MS);  } 
+      vTaskDelay(100 / portTICK_PERIOD_MS);  
+    } 
       else {
       motor_power = 0;
-      vTaskDelay(100 / portTICK_PERIOD_MS);  }
+      vTaskDelay(100 / portTICK_PERIOD_MS);  
+    }
+
+    if (webSocket.isConnected()) {
+        String msg = String("{\"encoder\":") + encoder_counts + "acceleration: " + accel.acceleration.z +"}";
+        webSocket.sendTXT(msg);
+    }
 
 }
+

@@ -38,13 +38,14 @@ void setup() {
     1
   );
 
-  xTaskCreate(
+  xTaskCreatePinnedToCore(
     speed_control_task,	// Function to be called
     "speed_control_task",	// Name of task
-    1024,				// Stack size in bytes
+    4096,				// Stack size in bytes
     NULL,				// Parameter to pass to function (void*)
     3,					// Task priority (0 to configMAX_PRIORITIES - 1)
-    NULL				// Task handle (TaskHandle_t*)
+    NULL,				// Task handle (TaskHandle_t*)
+    0
   );
 
   // xTaskCreate(

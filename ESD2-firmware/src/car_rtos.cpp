@@ -21,11 +21,14 @@ void speed_control_task(void * params) {
 
     int pos = 0;    // variable to store the servo position
 
-    setup_motor1();
-    // setup_motor2();
-    //setup_encoder();
+    // steering_servo.attach(SERVO_PIN);
 
-    steering_servo.attach(SERVO_PIN);
+    setup_motor1();
+    setup_motor2();
+    setup_encoder();
+
+    imu_setup();
+    // delay(100);
 
     motor_enabled = false;
     direction_forward = true;  // true = forward, false = reverse
@@ -33,13 +36,20 @@ void speed_control_task(void * params) {
     vTaskDelay(500 / portTICK_PERIOD_MS);
 
     while(true) {
-        steering_servo.write(steering_angle);
-        Serial.println(motor_power);
+        // steering_servo.write(steering_angle);
+        // Serial.println(motor_power);
 
         set_motor1_power(motor_power);
-        // set_motor2_power(motor_power);
+        set_motor2_power(motor_power);
+
+        encoder_counts = encoder.getCount();
+
+        read_imu();
+        // delay(10);
 
         vTaskDelay(100 / portTICK_PERIOD_MS);
+
+
    }
 }
 
