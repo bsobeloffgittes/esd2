@@ -92,16 +92,11 @@ void service_websocket(void) {
           power = -1.0;
       }
 
-      Serial.print(power);
-
       motor_power = power;
       
-
-      vTaskDelay(100 / portTICK_PERIOD_MS);  
     } 
       else {
       motor_power = 0;
-      vTaskDelay(100 / portTICK_PERIOD_MS);  
     }
 
     if (webSocket.isConnected()) {

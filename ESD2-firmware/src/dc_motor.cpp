@@ -57,7 +57,7 @@ void setup_encoder() {
 	ESP32Encoder::useInternalWeakPullResistors = puType::up;
 
 	// use pin 19 and 18 for the first encoder
-	encoder.attachHalfQuad(25, 26);
+	encoder.attachHalfQuad(ENCODER1_A, ENCODER1_B);
     
 	// set starting count value after attaching
 	encoder.setCount(0);

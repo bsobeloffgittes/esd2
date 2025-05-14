@@ -9,6 +9,9 @@
 
 #define SERVO_PIN 18
 
+#define ENCODER1_A 25
+#define ENCODER1_B 25
+
 
 extern Adafruit_ICM20948 icm;
 extern sensors_event_t accel;
