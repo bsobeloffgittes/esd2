@@ -57,6 +57,7 @@ void dc_motor_control_task(void * params) {
 
 void sense_task(void * params) {
     ESP32Encoder encoder1;
+    ESP32Encoder encoder2;
 
     // setup_encoder();
     // Enable the weak pull up resistors
@@ -66,9 +67,11 @@ void sense_task(void * params) {
 
 	// use pin 19 and 18 for the first encoder
 	encoder1.attachHalfQuad(ENCODER1_A, ENCODER1_B);
+    encoder2.attachHalfQuad(ENCODER2_A, ENCODER2_B);
     
 	// set starting count value after attaching
 	encoder1.setCount(0);
+    encoder2.setCount(0);
 
 
     
@@ -80,7 +83,7 @@ void sense_task(void * params) {
 
         // Read and send encoder data
         //encoder_counts = encoder.getCount();
-        Serial.println("encoder1: " + String((int32_t)encoder1.getCount()));
+        Serial.println("encoder1: " + String((int32_t)encoder1.getCount()) + "encoder2: " + String((int32_t)encoder2.getCount()));
 
         vTaskDelay(10 / portTICK_PERIOD_MS);
     }

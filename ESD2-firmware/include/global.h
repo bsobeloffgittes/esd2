@@ -12,6 +12,9 @@
 #define ENCODER1_A 25
 #define ENCODER1_B 26
 
+#define ENCODER2_A 27
+#define ENCODER2_B 14
+
 
 extern Adafruit_ICM20948 icm;
 extern sensors_event_t accel;
