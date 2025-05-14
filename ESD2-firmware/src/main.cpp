@@ -48,14 +48,14 @@ void setup() {
     0
   );
 
-  // xTaskCreate(
-  //   dc_motor_control_task,	// Function to be called
-  //   "dc motor control task",	// Name of task
-  //   2048,				// Stack size in bytes
-  //   NULL,				// Parameter to pass to function (void*)
-  //   2,					// Task priority (0 to configMAX_PRIORITIES - 1)
-  //   NULL				// Task handle (TaskHandle_t*)
-  // );
+  xTaskCreate(
+    dc_motor_control_task,	// Function to be called
+    "dc motor control task",	// Name of task
+    2048,				// Stack size in bytes
+    NULL,				// Parameter to pass to function (void*)
+    2,					// Task priority (0 to configMAX_PRIORITIES - 1)
+    NULL				// Task handle (TaskHandle_t*)
+  );
   
   vTaskDelete(NULL);
 

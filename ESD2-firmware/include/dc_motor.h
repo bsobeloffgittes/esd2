@@ -1,5 +1,4 @@
-#ifndef DC_MOTOR_H_
-#define DC_MOTOR_H_
+#pragma once
 
 #include <Arduino.h>
 #include <ESP32Encoder.h>
@@ -27,6 +26,3 @@ void set_motor2_power(float power);
 void setup_encoder(void);
 
 int get_encoder_counts(void);
-
-
-#endif

@@ -1,5 +1,4 @@
-#ifndef WIFI_CONTROL_H_
-#define WIFI_CONTROL_H_
+#pragma once
 
 #include <WiFi.h>
 #include <WebSocketsClient.h>
@@ -20,5 +19,3 @@ void wifi_init(void);
 
 void service_websocket(void);
 
-
-#endif

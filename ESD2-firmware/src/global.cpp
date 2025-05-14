@@ -10,7 +10,7 @@ sensors_event_t temp;
 
 ESP32Encoder encoder;
 
-Servo steering_servo;
+// Servo steering_servo;
 int steering_angle;
 
 

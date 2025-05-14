@@ -1,11 +1,10 @@
-#ifndef GLOBAL_H_
-#define GLOBAL_H_
+#pragma once
 
 #include <Adafruit_ICM20X.h>
 #include <Adafruit_ICM20948.h>
 #include <Adafruit_Sensor.h>
 #include <ESP32Encoder.h>
-#include <ESP32_Servo.h>
+//#include <ESP32_Servo.h>
 
 
 #define SERVO_PIN 18
@@ -20,7 +19,7 @@ extern sensors_event_t temp;
 
 extern ESP32Encoder encoder;
 
-extern Servo steering_servo;
+//extern Servo steering_servo;
 extern int steering_angle;
 
 
@@ -29,4 +28,3 @@ extern float motor_power;
 extern bool direction_forward;
 extern int encoder_counts;
 
-#endif
