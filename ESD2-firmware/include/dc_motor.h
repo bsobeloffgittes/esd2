@@ -14,8 +14,8 @@
 
 
 
-#define ENCODER_A_PIN 25
-#define ENCODER_B_PIN 26
+#define ENCODER_A_PIN 27
+#define ENCODER_B_PIN 14
 
 void setup_motor1(void);
 void set_motor1_power(float power);
@@ -26,3 +26,4 @@ void set_motor2_power(float power);
 void setup_encoder(void);
 
 int get_encoder_counts(void);
+

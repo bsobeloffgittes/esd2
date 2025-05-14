@@ -10,38 +10,25 @@ void wifi_task(void * params) {
         service_websocket();
         
 
-        // Loop at 10 Hz
-        vTaskDelay(100 / portTICK_PERIOD_MS);
+        // Loop at 100 Hz
+        vTaskDelay(10 / portTICK_PERIOD_MS);
     }
 }
 
 
 
-void speed_control_task(void * params) {
+void servo_control_task(void * params) {
 
     int pos = 0;    // variable to store the servo position
 
-    //steering_servo.attach(SERVO_PIN);
     init_servo();
 
-    imu_setup();
-    // delay(100);
-
-    vTaskDelay(500 / portTICK_PERIOD_MS);
+    vTaskDelay(100 / portTICK_PERIOD_MS);
 
     while(true) {
         set_servo_angle(steering_angle);
-        // steering_servo.write(steering_angle);
-        // Serial.println(motor_power);
 
-        // set_motor1_power(motor_power);
-        // set_motor2_power(motor_power);
-
-        // encoder_counts = encoder.getCount();
-
-        read_imu();
-
-        vTaskDelay(5 / portTICK_PERIOD_MS);
+        vTaskDelay(10 / portTICK_PERIOD_MS);
 
 
    }
@@ -50,7 +37,6 @@ void speed_control_task(void * params) {
 void dc_motor_control_task(void * params) {
     setup_motor1();
     setup_motor2();
-    setup_encoder();
 
     motor_enabled = false;
     direction_forward = true;  // true = forward, false = reverse
@@ -58,20 +44,48 @@ void dc_motor_control_task(void * params) {
     vTaskDelay(100 / portTICK_PERIOD_MS);
 
     while(true) {
-        Serial.print("dc motor loop");
+        // Serial.print("dc motor loop");
         set_motor1_power(motor_power);
         set_motor2_power(motor_power);
-        // set_motor2_power(motor_power);
-        // Serial.print(motor_power);
-        
 
-        // Read and send encoder data
-        encoder_counts = encoder.getCount();
         // Serial.println("Encoder count = " + String(encoder_counts));
 
         vTaskDelay(10 / portTICK_PERIOD_MS);
     }
     
+}
 
+void sense_task(void * params) {
+    ESP32Encoder encoder1;
+    ESP32Encoder encoder2;
+
+    // setup_encoder();
+    // Enable the weak pull up resistors
+    // pinMode(ENCODER1_A, INPUT);
+    // pinMode(ENCODER1_B, INPUT);
+	ESP32Encoder::useInternalWeakPullResistors = puType::up;
+
+	// use pin 19 and 18 for the first encoder
+	encoder1.attachHalfQuad(ENCODER1_A, ENCODER1_B);
+    encoder2.attachHalfQuad(ENCODER2_A, ENCODER2_B);
+    
+	// set starting count value after attaching
+	encoder1.setCount(0);
+    encoder2.setCount(0);
+
+
+    
+
+    imu_setup();
+
+    while(true) {
+        read_imu();
+
+        // Read and send encoder data
+        //encoder_counts = encoder.getCount();
+        Serial.println("encoder1: " + String((int32_t)encoder1.getCount()) + "encoder2: " + String((int32_t)encoder2.getCount()));
+
+        vTaskDelay(10 / portTICK_PERIOD_MS);
+    }
 
 }

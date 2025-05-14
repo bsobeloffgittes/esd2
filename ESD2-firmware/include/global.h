@@ -9,6 +9,12 @@
 
 #define SERVO_PIN 18
 
+#define ENCODER1_A 25
+#define ENCODER1_B 26
+
+#define ENCODER2_A 27
+#define ENCODER2_B 14
+
 
 extern Adafruit_ICM20948 icm;
 extern sensors_event_t accel;
@@ -17,8 +23,6 @@ extern sensors_event_t mag;
 extern sensors_event_t temp;
 
 
-extern ESP32Encoder encoder;
-
 //extern Servo steering_servo;
 extern int steering_angle;
 
@@ -26,5 +30,7 @@ extern int steering_angle;
 extern bool motor_enabled;
 extern float motor_power;
 extern bool direction_forward;
-extern int encoder_counts;
+
+extern int encoder1_counts;
+extern int encoder2_counts;
 

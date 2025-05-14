@@ -38,23 +38,31 @@ void setup() {
     1
   );
 
-  xTaskCreatePinnedToCore(
-    speed_control_task,	// Function to be called
-    "speed_control_task",	// Name of task
+  xTaskCreate(
+    servo_control_task,	// Function to be called
+    "servo_control_task",	// Name of task
     4096,				// Stack size in bytes
     NULL,				// Parameter to pass to function (void*)
     3,					// Task priority (0 to configMAX_PRIORITIES - 1)
-    NULL,				// Task handle (TaskHandle_t*)
-    0
+    NULL				// Task handle (TaskHandle_t*)
   );
 
   xTaskCreate(
-    dc_motor_control_task,	// Function to be called
-    "dc motor control task",	// Name of task
-    2048,				// Stack size in bytes
-    NULL,				// Parameter to pass to function (void*)
-    2,					// Task priority (0 to configMAX_PRIORITIES - 1)
-    NULL				// Task handle (TaskHandle_t*)
+    dc_motor_control_task,
+    "dc motor control task",
+    2048,
+    NULL,
+    2,
+    NULL
+  );
+
+  xTaskCreate(
+    sense_task,
+    "sense task",
+    4096,
+    NULL,
+    0,
+    NULL
   );
   
   vTaskDelete(NULL);

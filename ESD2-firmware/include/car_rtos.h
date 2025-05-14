@@ -7,7 +7,8 @@
 #include "servo.h"
 
 void wifi_task(void * params);
-void speed_control_task(void * params);
+void servo_control_task(void * params);
 void dc_motor_control_task(void * params);
+void sense_task(void * params);
 
 
