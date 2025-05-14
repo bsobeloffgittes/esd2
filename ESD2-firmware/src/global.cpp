@@ -8,8 +8,6 @@ sensors_event_t mag;
 sensors_event_t temp;
 
 
-ESP32Encoder encoder;
-
 // Servo steering_servo;
 int steering_angle;
 
@@ -17,4 +15,6 @@ int steering_angle;
 bool motor_enabled;
 float motor_power;
 bool direction_forward;
-int encoder_counts;
+
+int encoder1_counts;
+int encoder2_counts;

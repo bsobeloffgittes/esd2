@@ -59,7 +59,7 @@ void setup() {
   xTaskCreate(
     sense_task,
     "sense task",
-    2048,
+    4096,
     NULL,
     0,
     NULL

@@ -100,7 +100,7 @@ void service_websocket(void) {
     }
 
     if (webSocket.isConnected()) {
-        String msg = String("{\"encoder\":") + encoder_counts + "acceleration: " + accel.acceleration.z +"}";
+        String msg = String("{\"encoder\":") + encoder1_counts + "acceleration: " + accel.acceleration.z +"}";
         webSocket.sendTXT(msg);
     }
 
