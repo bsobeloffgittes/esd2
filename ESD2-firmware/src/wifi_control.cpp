@@ -81,28 +81,29 @@ void wifi_init(void) {
 }
 
 void service_websocket(void) {
-    // Keep WebSocket connection alive
+  // Keep WebSocket connection alive
   webSocket.loop();
 
   if (motor_enabled) {
-      // Set motor power based on direction
-      float power = 1.0;
+    // Set motor power based on direction
+    float power = 0.5;
 
-      if (!direction_forward) {
-          power = -1.0;
-      }
-
-      motor_power = power;
-      
-    } 
-      else {
-      motor_power = 0;
+    if (!direction_forward) {
+        power = -0.5;
     }
 
-    if (webSocket.isConnected()) {
-        String msg = String("{\"encoder\":") + encoder1_counts + "acceleration: " + accel.acceleration.z +"}";
-        webSocket.sendTXT(msg);
-    }
+    motor1_power_ref = power;
+    motor2_power_ref = power;
+    
+  } else {
+    motor1_power_ref = 0;
+    motor2_power_ref = 0;
+  }
+
+  if (webSocket.isConnected()) {
+      String msg = String("{\"encoder\":") + (int32_t) encoder1_rpm + "acceleration: " + accel.acceleration.z +"}";
+      webSocket.sendTXT(msg);
+  }
 
 }
 

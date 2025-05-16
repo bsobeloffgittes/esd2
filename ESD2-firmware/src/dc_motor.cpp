@@ -52,6 +52,36 @@ void set_motor2_power(float power) {
     //analogWrite(MOTOR_EN_PIN, power_int);
 }
 
+
+void run_wheel_pid(float rpm1, float rpm2) {
+    const float kp = 0.002;
+    const float ki = 0.00001;
+    const float kd = 0.0;
+
+    static float err_int = 0;
+    static float last_err = 0;
+    static int64_t last_time = 0;
+    
+    float error = rpm1 - rpm2;
+    int64_t new_time = esp_timer_get_time();
+
+    err_int += error * (((float)(new_time - last_time)) / 1000000.0);
+
+    float err_der = (error - last_err) / (((float)(new_time - last_time)) / 1000000.0);
+
+    float pid = kp * error + ki * err_int + kd * err_der;
+
+    motor1_power_actual = motor1_power_ref + pid;
+    motor2_power_actual = motor2_power_ref - pid;
+
+
+
+    last_time = new_time;
+    last_err = error;
+}
+
+
+
 // void setup_encoder() {
 //       // Enable the weak pull up resistors
 // 	ESP32Encoder::useInternalWeakPullResistors = puType::up;

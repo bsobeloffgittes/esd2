@@ -23,7 +23,7 @@ void set_motor1_power(float power);
 void setup_motor2(void);
 void set_motor2_power(float power);
 
-void setup_encoder(void);
-
 int get_encoder_counts(void);
+
+void run_wheel_pid(float rpm1, float rpm2);
 

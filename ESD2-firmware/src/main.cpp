@@ -64,6 +64,16 @@ void setup() {
     0,
     NULL
   );
+
+  // xTaskCreate(
+  //   pid_task,
+  //   "pid task",
+  //   4096,
+  //   NULL,
+  //   0,
+  //   NULL
+  // );
+  
   
   vTaskDelete(NULL);
 

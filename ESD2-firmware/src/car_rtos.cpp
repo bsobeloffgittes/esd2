@@ -45,8 +45,8 @@ void dc_motor_control_task(void * params) {
 
     while(true) {
         // Serial.print("dc motor loop");
-        set_motor1_power(motor_power);
-        set_motor2_power(motor_power);
+        set_motor1_power(motor1_power_actual);
+        set_motor2_power(motor2_power_actual);
 
         // Serial.println("Encoder count = " + String(encoder_counts));
 
@@ -56,8 +56,8 @@ void dc_motor_control_task(void * params) {
 }
 
 void sense_task(void * params) {
-    ESP32Encoder encoder1;
-    ESP32Encoder encoder2;
+    Encoder encoder1;
+    Encoder encoder2;
 
     // setup_encoder();
     // Enable the weak pull up resistors
@@ -66,14 +66,12 @@ void sense_task(void * params) {
 	ESP32Encoder::useInternalWeakPullResistors = puType::up;
 
 	// use pin 19 and 18 for the first encoder
-	encoder1.attachHalfQuad(ENCODER1_A, ENCODER1_B);
-    encoder2.attachHalfQuad(ENCODER2_A, ENCODER2_B);
+	encoder1.initialize(ENCODER1_A, ENCODER1_B);
+    encoder2.initialize(ENCODER2_A, ENCODER2_B);
     
-	// set starting count value after attaching
-	encoder1.setCount(0);
-    encoder2.setCount(0);
-
-
+	// // set starting count value after attaching
+	// encoder1.setCount(0);
+    // encoder2.setCount(0);
     
 
     imu_setup();
@@ -83,9 +81,18 @@ void sense_task(void * params) {
 
         // Read and send encoder data
         //encoder_counts = encoder.getCount();
-        Serial.println("encoder1: " + String((int32_t)encoder1.getCount()) + "encoder2: " + String((int32_t)encoder2.getCount()));
+        encoder1_rpm = encoder1.get_rpm();
+        encoder2_rpm = encoder2.get_rpm();
+
+        Serial.println("encoder1: " + String(encoder1_rpm) + " encoder2: " + String(encoder2_rpm));
+
+        run_wheel_pid(encoder1_rpm, encoder2_rpm);
 
         vTaskDelay(10 / portTICK_PERIOD_MS);
+
+        
     }
 
 }
+
+

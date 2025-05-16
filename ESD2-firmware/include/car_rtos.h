@@ -5,6 +5,7 @@
 #include "imu.h"
 #include "wifi_control.h"
 #include "servo.h"
+#include "encoder.h"
 
 void wifi_task(void * params);
 void servo_control_task(void * params);

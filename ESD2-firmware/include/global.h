@@ -28,9 +28,16 @@ extern int steering_angle;
 
 
 extern bool motor_enabled;
-extern float motor_power;
+extern float motor1_power_ref;
+extern float motor2_power_ref;
+
+extern float motor1_power_actual;
+extern float motor2_power_actual;
+
 extern bool direction_forward;
 
 extern int encoder1_counts;
 extern int encoder2_counts;
 
+extern float encoder1_rpm;
+extern float encoder2_rpm;
